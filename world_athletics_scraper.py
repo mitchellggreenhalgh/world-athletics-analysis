@@ -103,6 +103,7 @@ class WorldAthleticsScraper:
 
 
     def make_data_dir(self) -> None:
+        '''Set up a data directory in the overall directory with the format: 'data/[yyyy_mm]', where the year and numeric month match the date of the download event.'''
         makedirs(f'data/{datetime.today():%Y_%m}', exist_ok=True)
         return f'data/{datetime.today():%Y_%m}'
 
@@ -240,6 +241,7 @@ class WorldAthleticsScraper:
         
         return None
     
+
     def compile_all_time_tables(self) -> None:
         '''Compile all all-time datasets in the data directory into two files: one for all men's records, and one for all women's records'''
         
