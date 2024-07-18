@@ -247,6 +247,8 @@ class WorldAthleticsScraper:
         
         # Men's Table
         file_list_men = glob('all_time_men*.csv', root_dir=self.data_dir)
+        if 'all_time_men_all_events.csv' in file_list_men: raise Exception('A compiled all events file has been found in the current directory.')
+
         dfs = None
 
         for file in file_list_men:
@@ -262,6 +264,8 @@ class WorldAthleticsScraper:
 
         # Women's Table
         file_list_women = glob('all_time_women*.csv', root_dir=self.data_dir)
+        if 'all_time_women_all_events.csv' in file_list_women: raise Warning('A compiled all events file has been found in the current directory.')
+        
         dfs = None
 
         for file in file_list_women:
