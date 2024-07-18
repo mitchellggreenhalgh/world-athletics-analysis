@@ -248,6 +248,7 @@ class WorldAthleticsScraper:
         # Men's Table
         file_list_men = glob('all_time_men*.csv', root_dir=self.data_dir)
         if 'all_time_men_all_events.csv' in file_list_men: raise Exception('A compiled all events file has been found in the current directory.')
+        # TODO: make input flow control to automatically delete a previously compiled all events file?
 
         dfs = None
 
