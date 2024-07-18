@@ -33,7 +33,7 @@ class WorldAthleticsScraper:
             * '2mile'
             * '5000m'
             * '10000m'
-            * 'half_marathon'
+            * 'halfMarathon'
             * 'marathon'
         '''
 
@@ -85,7 +85,7 @@ class WorldAthleticsScraper:
                 'men': f'https://worldathletics.org/records/all-time-toplists/middlelong/10000-metres/all/men/senior?regionType=world&page=1&bestResultsOnly=false&firstDay=1899-12-30&lastDay={datetime.today() - timedelta(days=1):%Y-%m-%d}&maxResultsByCountry=all&eventId=10229610&ageCategory=senior',
                 'women': f'https://worldathletics.org/records/all-time-toplists/middlelong/10000-metres/all/women/senior?regionType=world&page=1&bestResultsOnly=false&firstDay=1899-12-30&lastDay={datetime.today() - timedelta(days=1):%Y-%m-%d}&maxResultsByCountry=all&eventId=10229521&ageCategory=senior'
             },
-            'half_marathon': {
+            'halfMarathon': {
                 'men': f'https://worldathletics.org/records/all-time-toplists/road-running/half-marathon/all/men/senior?regionType=world&page=1&bestResultsOnly=false&firstDay=1899-12-30&lastDay={datetime.today() - timedelta(days=1):%Y-%m-%d}&maxResultsByCountry=all&eventId=10229633&ageCategory=senior',
                 'women': f'https://worldathletics.org/records/all-time-toplists/road-running/half-marathon/all/women/senior?regionType=world&page=1&bestResultsOnly=false&firstDay=1899-12-30&lastDay={datetime.today() - timedelta(days=1):%Y-%m-%d}&maxResultsByCountry=all&eventId=10229541&ageCategory=senior'
             },
@@ -96,7 +96,7 @@ class WorldAthleticsScraper:
         }
         self.valid_events = ['60m', '100m', '200m', '400m', 
                              '800m', '1500m', 'mile', '3000m', '2mile',
-                             '5000m', '10000m', 'half_marathon', 'marathon']
+                             '5000m', '10000m', 'halfMarathon', 'marathon']
         
         if self.event not in self.valid_events and self.event is not None:
             raise ValueError('Please choose a valid running event that is offered in this module.')
@@ -185,7 +185,7 @@ class WorldAthleticsScraper:
                 * '2mile'
                 * '5000m'
                 * '10000m'
-                * 'half_marathon'
+                * 'halfMarathon'
                 * 'marathon'
 
         -  export (`bool`): If `True`, export the data to a .csv file in the data directory. Default is `False`.
@@ -214,7 +214,7 @@ class WorldAthleticsScraper:
         match event:
             case '60m' | '100m' | '200m' | '400m':
                 dfs['Mark_Seconds'] = dfs['Mark']
-            case 'half_marathon' | 'marathon':
+            case 'halfMarathon' | 'marathon':
                 dfs['Mark_Seconds'] = dfs['Mark'].apply(self.convert_marathons)
             case _:
                 dfs['Mark_Seconds'] = dfs['Mark'].apply(lambda row: float(row.split(':')[0]) * 60 + float(row.split(':')[1].replace('h', '')))
