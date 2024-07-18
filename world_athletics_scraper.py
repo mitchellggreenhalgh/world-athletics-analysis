@@ -8,6 +8,8 @@ import re
 from datetime import datetime, timedelta
 from bs4 import BeautifulSoup
 from os import makedirs
+from tqdm.auto import tqdm
+from glob import glob
 
 sns.set_theme(style='whitegrid')
 
@@ -92,17 +94,15 @@ class WorldAthleticsScraper:
                 'women': f'https://worldathletics.org/records/all-time-toplists/road-running/marathon/all/women/senior?regionType=world&page=1&bestResultsOnly=false&firstDay=1899-12-30&lastDay={datetime.today() - timedelta(days=1):%Y-%m-%d}&maxResultsByCountry=all&eventId=10229534&ageCategory=senior'
             }
         }
-        self.valid_events = [None,
-                             '60m', '100m', '200m', '400m', 
+        self.valid_events = ['60m', '100m', '200m', '400m', 
                              '800m', '1500m', 'mile', '3000m', '2mile',
                              '5000m', '10000m', 'half_marathon', 'marathon']
         
-        if self.event not in self.valid_events:
+        if self.event not in self.valid_events and self.event is not None:
             raise ValueError('Please choose a valid running event that is offered in this module.')
 
 
     def make_data_dir(self) -> None:
-        makedirs('data', exist_ok=True)
         makedirs(f'data/{datetime.today():%Y_%m}', exist_ok=True)
         return f'data/{datetime.today():%Y_%m}'
 
@@ -167,7 +167,7 @@ class WorldAthleticsScraper:
 
 
     def download_all_time_data(self, sex: str, event: str | None = None, export: bool = False) -> pd.DataFrame:
-        '''Downloads all the 800m times below 1:46.00 from the World Athletics Database. There are currently 82 pages, but this might need to be updated as more runners run at or below their chosen threshold.
+        '''Downloads all the pages of the world athletics all-time, all-performances (more than one entry per athlete is possible) list for an event and exports them as a single DataFrame.
         
         Args:
         -  sex (`str`): 'men' or 'women'
@@ -216,7 +216,7 @@ class WorldAthleticsScraper:
             case 'half_marathon' | 'marathon':
                 dfs['Mark_Seconds'] = dfs['Mark'].apply(self.convert_marathons)
             case _:
-                dfs['Mark_Seconds'] = dfs['Mark'].apply(lambda row: float(row.split(':')[0]) * 60 + float(row.split(':')[1]))
+                dfs['Mark_Seconds'] = dfs['Mark'].apply(lambda row: float(row.split(':')[0]) * 60 + float(row.split(':')[1].replace('h', '')))
 
         if export:
             dfs.to_csv(f'{self.data_dir}/all_time_{sex}_{event}.csv', index=False)
@@ -230,3 +230,47 @@ class WorldAthleticsScraper:
             return float(row.split(':')[0]) * 3600 + float(row.split(':')[1]) * 60 + float(row.split(':')[2])
         
         return float(row.split(':')[0]) * 60 + float(row.split(':')[1])
+    
+
+    def download_all_time_data_all_events(self) -> None:
+        '''Download all all-time, all-performances datasets for all the events covered by this module.'''
+        for event in tqdm(self.valid_events):
+            for sex in ('men', 'women'):
+                self.download_all_time_data(sex=sex, event=event, export='True')
+        
+        return None
+    
+    def compile_all_time_tables(self) -> None:
+        '''Compile all all-time datasets in the data directory into two files: one for all men's records, and one for all women's records'''
+        
+        # Men's Table
+        file_list_men = glob('all_time_men*.csv', root_dir=self.data_dir)
+        dfs = None
+
+        for file in file_list_men:
+            df = pd.read_csv(f'{self.data_dir}/{file}')
+            
+            if dfs is None:
+                dfs = df.assign(event=file.split('_')[-1].split('.')[0])
+                continue
+
+            dfs = pd.concat([dfs, df.assign(event=file.split('_')[-1].split('.')[0])])
+
+        dfs.to_csv(f'{self.data_dir}/all_time_men_all_events.csv', index=False)
+
+        # Women's Table
+        file_list_women = glob('all_time_women*.csv', root_dir=self.data_dir)
+        dfs = None
+
+        for file in file_list_women:
+            df = pd.read_csv(f'{self.data_dir}/{file}')
+            
+            if dfs is None:
+                dfs = df.assign(event=file.split('_')[-1].split('.')[0])
+                continue
+
+            dfs = pd.concat([dfs, df.assign(event=file.split('_')[-1].split('.')[0])])
+
+        dfs.to_csv(f'{self.data_dir}/all_time_women_all_events.csv', index=False)
+
+        return None
