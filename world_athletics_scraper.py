@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
+# import matplotlib.pyplot as plt
+# import seaborn as sns
 import requests
 import re
 
@@ -11,7 +11,7 @@ from os import makedirs
 from tqdm.auto import tqdm
 from glob import glob
 
-sns.set_theme(style='whitegrid')
+# sns.set_theme(style='whitegrid')
 
 class WorldAthleticsScraper:
     '''A module to scrape the data tables on the World Athletics All Time and Season Bests lists.'''
