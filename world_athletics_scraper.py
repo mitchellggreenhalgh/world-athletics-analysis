@@ -39,7 +39,60 @@ class WorldAthleticsScraper:
 
         self.event = event
         self.data_dir = self.make_data_dir()
-
+        self.season_bests_html_dicts = {
+            '60m': {
+                'men': 'https://worldathletics.org/records/toplists/sprints/60-metres/all/men/senior/2001?regionType=world&timing=electronic&windReading=regular&page=1&bestResultsOnly=false&maxResultsByCountry=all&eventId=10229683&ageCategory=senior',
+                'women': 'https://worldathletics.org/records/toplists/sprints/60-metres/all/women/senior/2001?regionType=world&timing=electronic&windReading=regular&page=1&bestResultsOnly=false&maxResultsByCountry=all&eventId=10229684&ageCategory=senior'
+            },
+            '100m': {
+                'men': 'https://worldathletics.org/records/toplists/sprints/100-metres/all/men/senior/2001?regionType=world&timing=electronic&windReading=regular&page=1&bestResultsOnly=false&maxResultsByCountry=all&eventId=10229630&ageCategory=senior',
+                'women': 'https://worldathletics.org/records/toplists/sprints/100-metres/all/women/senior/2001?regionType=world&timing=electronic&windReading=regular&page=1&bestResultsOnly=false&maxResultsByCountry=all&eventId=10229509&ageCategory=senior'
+            },
+            '200m': {
+                'men': 'https://worldathletics.org/records/toplists/sprints/200-metres/all/men/senior/2001?regionType=world&timing=electronic&windReading=regular&page=1&bestResultsOnly=false&maxResultsByCountry=all&eventId=10229605&ageCategory=senior',
+                'women':  'https://worldathletics.org/records/toplists/sprints/200-metres/all/women/senior/2001?regionType=world&timing=electronic&windReading=regular&page=1&bestResultsOnly=false&maxResultsByCountry=all&eventId=10229510&ageCategory=senior'
+            },
+            '400m': {
+                'men': 'https://worldathletics.org/records/toplists/sprints/400-metres/all/men/senior/2001?regionType=world&timing=electronic&page=1&bestResultsOnly=false&maxResultsByCountry=all&eventId=10229631&ageCategory=senior',
+                'women': 'https://worldathletics.org/records/toplists/sprints/400-metres/all/women/senior/2001?regionType=world&timing=electronic&page=1&bestResultsOnly=false&maxResultsByCountry=all&eventId=10229511&ageCategory=senior'
+            },
+            '800m': {
+                'men': 'https://worldathletics.org/records/toplists/middlelong/800-metres/all/men/senior/2001?regionType=world&timing=electronic&page=1&bestResultsOnly=false&maxResultsByCountry=all&eventId=10229501&ageCategory=senior',
+                'women': 'https://worldathletics.org/records/toplists/middlelong/800-metres/all/women/senior/2001?regionType=world&timing=electronic&page=1&bestResultsOnly=false&maxResultsByCountry=all&eventId=10229512&ageCategory=senior'
+            },
+            '1500m': {
+                'men': 'https://worldathletics.org/records/toplists/middlelong/1500-metres/all/men/senior/2001?regionType=world&page=1&bestResultsOnly=false&maxResultsByCountry=all&eventId=10229502&ageCategory=senior',
+                'women': 'https://worldathletics.org/records/toplists/middlelong/1500-metres/all/women/senior/2001?regionType=world&page=1&bestResultsOnly=false&maxResultsByCountry=all&eventId=10229513&ageCategory=senior'
+            },
+            'mile': {
+                'men': 'https://worldathletics.org/records/toplists/middlelong/one-mile/all/men/senior/2001?regionType=world&page=1&bestResultsOnly=false&maxResultsByCountry=all&eventId=10229503&ageCategory=senior',
+                'women': 'https://worldathletics.org/records/toplists/middlelong/one-mile/all/women/senior/2001?regionType=world&page=1&bestResultsOnly=false&maxResultsByCountry=all&eventId=10229517&ageCategory=senior'
+            },
+            '3000m': {
+                'men': 'https://worldathletics.org/records/toplists/middlelong/3000-metres/all/men/senior/2001?regionType=world&page=1&bestResultsOnly=false&maxResultsByCountry=all&eventId=10229607&ageCategory=senior',
+                'women': 'https://worldathletics.org/records/toplists/middlelong/3000-metres/all/women/senior/2001?regionType=world&page=1&bestResultsOnly=false&maxResultsByCountry=all&eventId=10229519&ageCategory=senior'
+            },
+            '2mile': {
+                'men': 'https://worldathletics.org/records/toplists/middlelong/two-miles/all/men/senior/2001?regionType=world&page=1&bestResultsOnly=false&maxResultsByCountry=all&eventId=10229608&ageCategory=senior',
+                'women': 'https://worldathletics.org/records/toplists/middlelong/two-miles/all/women/senior/2001?regionType=world&page=1&bestResultsOnly=false&maxResultsByCountry=all&eventId=10229520&ageCategory=senior'
+            },
+            '5000m': {
+                'men': 'https://worldathletics.org/records/toplists/middlelong/5000-metres/all/men/senior/2001?regionType=world&page=1&bestResultsOnly=false&maxResultsByCountry=all&eventId=10229609&ageCategory=senior',
+                'women': 'https://worldathletics.org/records/toplists/middlelong/5000-metres/all/women/senior/2001?regionType=world&page=9&bestResultsOnly=false&maxResultsByCountry=all&eventId=10229514&ageCategory=senior'
+            },
+            '10000m': {
+                'men': 'https://worldathletics.org/records/toplists/middlelong/10000-metres/all/men/senior/2001?regionType=world&page=1&bestResultsOnly=false&maxResultsByCountry=all&eventId=10229610&ageCategory=senior',
+                'women': 'https://worldathletics.org/records/toplists/middlelong/10000-metres/all/women/senior/2001?regionType=world&page=1&bestResultsOnly=false&maxResultsByCountry=all&eventId=10229521&ageCategory=senior'
+            },
+            'halfMarathon': {
+                'men': 'https://worldathletics.org/records/toplists/road-running/half-marathon/all/men/senior/2001?regionType=world&page=1&bestResultsOnly=false&maxResultsByCountry=all&eventId=10229633&ageCategory=senior',
+                'women': 'https://worldathletics.org/records/toplists/road-running/half-marathon/all/women/senior/2001?regionType=world&page=1&bestResultsOnly=false&maxResultsByCountry=all&eventId=10229541&ageCategory=senior'
+            },
+            'marathon': {
+                'men': 'https://worldathletics.org/records/toplists/road-running/marathon/all/men/senior/2001?regionType=world&page=1&bestResultsOnly=false&maxResultsByCountry=all&eventId=10229634&ageCategory=senior',
+                'women': 'https://worldathletics.org/records/toplists/road-running/marathon/all/women/senior/2001?regionType=world&page=1&bestResultsOnly=false&maxResultsByCountry=all&eventId=10229534&ageCategory=senior'
+            }
+        }
         self.all_time_html_dicts = {
             '60m': {
                 'men': f'https://worldathletics.org/records/all-time-toplists/sprints/60-metres/all/men/senior?regionType=world&timing=electronic&windReading=regular&page=1&bestResultsOnly=false&firstDay=1899-12-30&lastDay={datetime.today() - timedelta(days=1):%Y-%m-%d}&maxResultsByCountry=all&eventId=10229683&ageCategory=senior',
@@ -108,30 +161,44 @@ class WorldAthleticsScraper:
         return f'data/{datetime.today():%Y_%m}'
 
 
-    def download_season_bests_800m(self, sex: str, export: bool = False) -> pd.DataFrame:
-        '''Download and Concatenate all Seasons Bests for a season, then concatenates all the seasons' season best performances across all years into a single `pd.DataFrame`.
+    def download_season_bests_data(self, sex: str, event: str | None = None, export: bool = False) -> pd.DataFrame:
+        '''Download and Concatenate all Seasons Bests for a season, then concatenates all the seasons' season best performances across all years into a single `pd.DataFrame`. The available years on the World Athletics season bests database are 2001 to the current season.
         
         Args:
         -  sex (`str`): 'men' or 'women'
+        -  event (`str`): choose one from the following list. The default is the event specified in the initializer.
+
+                * '60m'
+                * '100m'
+                * '200m'
+                * '400m'
+                * '800m'
+                * '1500m'
+                * 'mile'
+                * '3000m'
+                * '2mile'
+                * '5000m'
+                * '10000m'
+                * 'halfMarathon'
+                * 'marathon'
+
         -  export (`bool`): whether or not to export the download as a .csv file
 
         Returns:
-        - dfs (`pd.DataFrame`): a DataFrame containing all of the Season Bests for All Years in the World Athletics Database
+        - dfs (`pd.DataFrame`): a DataFrame containing event data for all of the Season Bests for all years in the World Athletics Database
         '''
-        
-        match sex:
-            case 'men':
-                html_path = 'https://worldathletics.org/records/toplists/middlelong/800-metres/all/men/senior/2001?regionType=world&timing=electronic&page=1&bestResultsOnly=false&maxResultsByCountry=all&eventId=10229501&ageCategory=senior'
 
-            case 'women':
-                html_path = 'https://worldathletics.org/records/toplists/middlelong/800-metres/all/women/senior/2001?regionType=world&timing=electronic&page=1&bestResultsOnly=false&maxResultsByCountry=all&eventId=10229512&ageCategory=senior'
+        if event is None:
+            event = self.event
 
-        num_pages = self.find_last_page_num(html_path)
-
+        html_path = self.season_bests_html_dicts[event][sex]
         dfs = None
-        for i in np.arange(2001, 2025):
+
+        for i in np.arange(2001, datetime.today().year + 1):
             new_path_1 = html_path.replace('2001', f'{i}')
             num_pages = self.find_last_page_num(new_path_1)
+
+            if num_pages == 0: continue
 
             for j in np.arange(1, num_pages + 1):
                 new_path_2 = new_path_1.replace('page=1', f'page={j}')
@@ -143,29 +210,19 @@ class WorldAthleticsScraper:
 
                 dfs = pd.concat([dfs, df])
 
-        dfs = dfs.reset_index(drop=True)
+        match event:
+            case '60m' | '100m' | '200m' | '400m':
+                dfs['Mark_Seconds'] = dfs['Mark']
+            case 'halfMarathon' | 'marathon':
+                dfs['Mark_Seconds'] = dfs['Mark'].apply(self.convert_marathons)
+            case _:
+                dfs['Mark_Seconds'] = dfs['Mark'].apply(lambda row: float(row.split(':')[0]) * 60 + float(row.split(':')[1].replace('h', '')))
 
         if export:
-            dfs.to_csv(f'data/season_bests_{sex}_800m.csv', index=False)
+            dfs.to_csv(f'{self.data_dir}/season_bests_{sex}_{event}.csv', index=False)
 
-        return dfs
+        return dfs.reset_index(drop=True)
         
-
-    def find_last_page_num(self, html_path: str) -> int:
-        '''Uses `requests`, `re`, and `bs4`'s `BeautifulSoup` to find the maximum page number of a given dataset.
-        
-        Args:
-        -  html_path (`str`): the html path of the first page of the dataset
-        
-        Returns:
-        -  last_page_num (`int`): the page number of the last page of data'''
-        
-        page = requests.get(html_path)
-        soup = BeautifulSoup(page.text, 'html.parser')
-        last_page_num = int(soup.find_all('a', attrs={'data-page': re.compile('[0-9]+')})[-1]['data-page'])
-
-        return last_page_num
-
 
     def download_all_time_data(self, sex: str, event: str | None = None, export: bool = False) -> pd.DataFrame:
         '''Downloads all the pages of the world athletics all-time, all-performances (more than one entry per athlete is possible) list for an event and exports them as a single DataFrame.
@@ -209,8 +266,6 @@ class WorldAthleticsScraper:
 
             dfs = pd.concat([dfs, df])
 
-        dfs = dfs.reset_index(drop=True)
-
         match event:
             case '60m' | '100m' | '200m' | '400m':
                 dfs['Mark_Seconds'] = dfs['Mark']
@@ -222,16 +277,17 @@ class WorldAthleticsScraper:
         if export:
             dfs.to_csv(f'{self.data_dir}/all_time_{sex}_{event}.csv', index=False)
 
-        return dfs
-    
+        return dfs.reset_index(drop=True)   
 
-    def convert_marathons(self, row: str) -> float:
-        '''Takes a cell of a half-marathon or marathon time from a `pd.DataFrame` and converts it to seconds.'''
-        if len(row.split(':')) == 3:
-            return float(row.split(':')[0]) * 3600 + float(row.split(':')[1]) * 60 + float(row.split(':')[2])
-        
-        return float(row.split(':')[0]) * 60 + float(row.split(':')[1])
-    
+ 
+    def download_season_bests_data_all_events(self) -> None:
+        '''Download all season bests, all-performances datasets for all the events covered by this module.'''
+        for event in tqdm(self.valid_events):
+            for sex in ('men', 'women'):
+                self.download_season_bests_data(sex=sex, event=event, export='True')
+
+        return None
+
 
     def download_all_time_data_all_events(self) -> None:
         '''Download all all-time, all-performances datasets for all the events covered by this module.'''
@@ -241,6 +297,47 @@ class WorldAthleticsScraper:
         
         return None
     
+
+    def compile_season_bests_tables(self) -> None:
+        '''Compile all season bests datasets in the data directory into two files: one for all men's records, and one for all women's records'''
+        
+        # Men's Table
+        file_list_men = glob('season_bests_men*.csv', root_dir=self.data_dir)
+        if 'season_bests_men_all_events.csv' in file_list_men: raise Exception('A compiled season bests file has been found in the current directory.')
+        # TODO: make input flow control to automatically delete a previously compiled all events file?
+
+        dfs = None
+
+        for file in file_list_men:
+            df = pd.read_csv(f'{self.data_dir}/{file}')
+            
+            if dfs is None:
+                dfs = df.assign(event=file.split('_')[-1].split('.')[0])
+                continue
+
+            dfs = pd.concat([dfs, df.assign(event=file.split('_')[-1].split('.')[0])])
+
+        dfs.to_csv(f'{self.data_dir}/season_bests_men_all_events.csv', index=False)
+
+        # Women's Table
+        file_list_women = glob('season_bests_women*.csv', root_dir=self.data_dir)
+        if 'season_bests_women_all_events.csv' in file_list_women: raise Warning('A compiled season bests file has been found in the current directory.')
+        
+        dfs = None
+
+        for file in file_list_women:
+            df = pd.read_csv(f'{self.data_dir}/{file}')
+            
+            if dfs is None:
+                dfs = df.assign(event=file.split('_')[-1].split('.')[0])
+                continue
+
+            dfs = pd.concat([dfs, df.assign(event=file.split('_')[-1].split('.')[0])])
+
+        dfs.to_csv(f'{self.data_dir}/season_bests_women_all_events.csv', index=False)
+
+        return None
+
 
     def compile_all_time_tables(self) -> None:
         '''Compile all all-time datasets in the data directory into two files: one for all men's records, and one for all women's records'''
@@ -281,3 +378,27 @@ class WorldAthleticsScraper:
         dfs.to_csv(f'{self.data_dir}/all_time_women_all_events.csv', index=False)
 
         return None
+    
+
+    def convert_marathons(self, row: str) -> float:
+        '''Takes a cell of a half-marathon or marathon time from a `pd.DataFrame` and converts it to seconds.'''
+        if len(row.split(':')) == 3:
+            return float(row.split(':')[0]) * 3600 + float(row.split(':')[1]) * 60 + float(row.split(':')[2])
+        
+        return float(row.split(':')[0]) * 60 + float(row.split(':')[1])
+    
+
+    def find_last_page_num(self, html_path: str) -> int:
+        '''Uses `requests`, `re`, and `bs4`'s `BeautifulSoup` to find the maximum page number of a given dataset.
+        
+        Args:
+        -  html_path (`str`): the html path of the first page of the dataset
+        
+        Returns:
+        -  last_page_num (`int`): the page number of the last page of data'''
+        
+        page = requests.get(html_path)
+        soup = BeautifulSoup(page.text, 'html.parser')
+        last_page_num = int(soup.find_all('a', attrs={'data-page': re.compile('[0-9]+')})[-1]['data-page'])
+
+        return last_page_num
